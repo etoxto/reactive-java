@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: reactive-java
+
+data:
+  studentCount: "1000"
+  teacherCount: "100"
+  examWorkCount:
+    - "5000"
+    - "50000"
+    - "250000"
