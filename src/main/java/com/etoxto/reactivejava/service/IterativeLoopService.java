@@ -1,7 +1,9 @@
 package com.etoxto.reactivejava.service;
 
+import com.etoxto.reactivejava.aop.Timed;
 import com.etoxto.reactivejava.model.ExamGrade;
 import com.etoxto.reactivejava.repository.DataRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.Map;
 @Service
 public class IterativeLoopService {
 
+    @Timed(service = "Преобразование через цикл")
     public Map<Long, ArrayList<Long>> getResults(DataRepository dataRepository, ExamGrade examGrade) {
         Map<Long, ArrayList<Long>> result = new HashMap<>();
 

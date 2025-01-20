@@ -95,7 +95,7 @@ public class RecordGenerator {
 
                     return ExamWork.builder()
                             .id(x)
-                            .student(students.get(teachers.size() + random.nextInt(students.size())))
+                            .student(students.get(random.nextInt(students.size())))
                             .teacher(teachers.get(random.nextInt(teachers.size())))
                             .attempts(attempts)
                             .answers(selectedAnswers)

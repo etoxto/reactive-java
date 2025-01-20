@@ -3,10 +3,7 @@ package com.etoxto.reactivejava.util;
 import com.etoxto.reactivejava.model.ExamWork;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
@@ -15,23 +12,23 @@ import java.util.function.Supplier;
 import java.util.stream.Collector;
 
 @Component
-public class CustomCollector implements Collector<ExamWork, Map<Long, ArrayList<Long>>, Map<Long, ArrayList<Long>>> {
+public class CustomCollector implements Collector<ExamWork, Map<Long, HashSet<Long>>, Map<Long, HashSet<Long>>> {
     @Override
-    public Supplier<Map<Long, ArrayList<Long>>> supplier() {
+    public Supplier<Map<Long, HashSet<Long>>> supplier() {
         return ConcurrentHashMap::new;
     }
 
     @Override
-    public BiConsumer<Map<Long, ArrayList<Long>>, ExamWork> accumulator() {
+    public BiConsumer<Map<Long, HashSet<Long>>, ExamWork> accumulator() {
         return (res, examWork) -> {
             Long teacherId = examWork.getTeacher().getId();
             Long studentId = examWork.getId();
-            res.computeIfAbsent(teacherId, k -> new ArrayList<>()).add(studentId);
+            res.computeIfAbsent(teacherId, k -> new HashSet<>()).add(studentId);
         };
     }
 
     @Override
-    public BinaryOperator<Map<Long, ArrayList<Long>>> combiner() {
+    public BinaryOperator<Map<Long, HashSet<Long>>> combiner() {
         return (map1, map2) -> {
             map2.forEach((teacherId, students) ->
                     map1.merge(teacherId, students, (existing, replacement) -> {
@@ -44,7 +41,7 @@ public class CustomCollector implements Collector<ExamWork, Map<Long, ArrayList<
     }
 
     @Override
-    public Function<Map<Long, ArrayList<Long>>, Map<Long, ArrayList<Long>>> finisher() {
+    public Function<Map<Long, HashSet<Long>>, Map<Long, HashSet<Long>>> finisher() {
         return Function.identity();
     }
 

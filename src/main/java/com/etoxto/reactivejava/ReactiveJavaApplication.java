@@ -9,10 +9,14 @@ import com.etoxto.reactivejava.service.ParallelStreamService;
 import com.etoxto.reactivejava.service.SingleStreamService;
 import com.etoxto.reactivejava.util.RecordGenerator;
 import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
+@AllArgsConstructor
+@EnableAspectJAutoProxy
 public class ReactiveJavaApplication {
 
     DataConfig dataConfig;
@@ -39,3 +43,10 @@ public class ReactiveJavaApplication {
         }
     }
 }
+
+
+// 2 лаба
+// дописать однопоточный стрим со своим коллектором
+// найти точку производительности между single and paralel stream
+// написать свой fork join pull (compute method) сравнить с паралельным стримом
+// вариант с сплитератор
