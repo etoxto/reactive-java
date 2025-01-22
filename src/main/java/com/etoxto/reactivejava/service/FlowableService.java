@@ -5,7 +5,9 @@ import com.etoxto.reactivejava.model.ExamGrade;
 import com.etoxto.reactivejava.model.ExamWork;
 import com.etoxto.reactivejava.repository.DataRepository;
 import com.etoxto.reactivejava.util.BackpressureSubscriber;
+import io.reactivex.rxjava3.core.BackpressureStrategy;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,7 @@ public class FlowableService {
         ExecutorService pool = newFixedThreadPool(1);
         Scheduler scheduler = Schedulers.from(pool);
 
-        Flowable<ExamWork> flowable = Flowable.fromIterable(dataRepository.getExamWorks())
+        Flowable<ExamWork> flowable = Observable.fromIterable(dataRepository.getExamWorks()).toFlowable(BackpressureStrategy.BUFFER)
                 .filter(examWork -> examWork.getExamGrade().equals(examGrade));
 
         backpressureSubscriber.setExamGrade(examGrade);

@@ -27,7 +27,7 @@ public class CustomObservableService {
 
     @Timed(service = "Реактивный поток с кастомным Observer")
     public Map<Long, HashSet<Long>> getResults(DataRepository dataRepository, ExamGrade examGrade) {
-        ExecutorService pool = Executors.newFixedThreadPool(4);
+        ExecutorService pool = Executors.newFixedThreadPool(1);
         Scheduler scheduler = Schedulers.from(pool);
 
         Observable<ExamWork> observable = Observable.fromIterable(dataRepository.getExamWorks())
@@ -37,14 +37,14 @@ public class CustomObservableService {
                 .subscribeOn(scheduler)
                 .subscribe(customObserver);
 
-        pool.shutdown();
+        /*pool.shutdown();
         try {
             if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
                 pool.shutdownNow();
             }
         } catch (InterruptedException e) {
             pool.shutdownNow();
-        }
+        }*/
 
         return customObserver.getResult();
     }

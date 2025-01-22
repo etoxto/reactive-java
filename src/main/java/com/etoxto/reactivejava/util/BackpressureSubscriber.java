@@ -25,7 +25,7 @@ public class BackpressureSubscriber implements FlowableSubscriber<ExamWork> {
     private final DataRepository dataRepository;
 
     @Getter
-    private final Map<Long, HashSet<Long>> result = new ConcurrentHashMap<>();
+    Map<Long, HashSet<Long>> result;
 
     public BackpressureSubscriber(DataRepository dataRepository) {
         this.dataRepository = dataRepository;
@@ -34,6 +34,7 @@ public class BackpressureSubscriber implements FlowableSubscriber<ExamWork> {
     @Override
     public void onSubscribe(Subscription s) {
         this.subscription = s;
+        result = new ConcurrentHashMap<>();
         subscription.request(BATCH_SIZE);
     }
 
