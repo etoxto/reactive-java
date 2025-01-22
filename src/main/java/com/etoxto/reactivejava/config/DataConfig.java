@@ -11,6 +11,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "data")
 public class DataConfig {
     private List<Integer> examWorkCount;
+    private boolean delayEnabled;
     private int teacherCount;
     private int studentCount;
 }

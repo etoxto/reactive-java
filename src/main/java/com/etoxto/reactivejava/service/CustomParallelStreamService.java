@@ -7,7 +7,6 @@ import com.etoxto.reactivejava.util.CustomParallelCollector;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,8 +19,15 @@ public class CustomParallelStreamService {
     @Timed(service = "Параллельный stream с кастомным коллектором")
     public Map<Long, Set<Long>> getResults(DataRepository dataRepository, ExamGrade examGrade) {
         return dataRepository.getExamWorks().stream()
-                .filter(e -> e.getExamGrade().equals(examGrade))
+                .peek(examWork -> {
+                    try {
+                        dataRepository.loadDataFromDb();
+                    }  catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .parallel()
+                .filter(e -> e.getExamGrade().equals(examGrade))
                 .collect(customParallelCollector);
     }
 }

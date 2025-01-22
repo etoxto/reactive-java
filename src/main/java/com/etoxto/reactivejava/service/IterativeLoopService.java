@@ -3,10 +3,8 @@ package com.etoxto.reactivejava.service;
 import com.etoxto.reactivejava.aop.Timed;
 import com.etoxto.reactivejava.model.ExamGrade;
 import com.etoxto.reactivejava.repository.DataRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,6 +18,12 @@ public class IterativeLoopService {
 
         for (var examWork : dataRepository.getExamWorks()) {
             Long teacherId = examWork.getTeacher().getId();
+
+            try {
+                dataRepository.loadDataFromDb();
+            }  catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             if (examWork.getExamGrade().equals(examGrade)) {
                 Long studentId = examWork.getStudent().getId();

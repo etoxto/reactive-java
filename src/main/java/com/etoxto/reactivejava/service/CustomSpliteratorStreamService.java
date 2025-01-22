@@ -8,7 +8,6 @@ import com.etoxto.reactivejava.util.CustomSpliterator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.StreamSupport;
@@ -22,6 +21,13 @@ public class CustomSpliteratorStreamService {
     @Timed(service = "Параллельный stream с кастомным сплитератором")
     public Map<Long, Set<Long>> getResults(DataRepository dataRepository, ExamGrade examGrade) {
         return StreamSupport.stream(new CustomSpliterator(dataRepository.getExamWorks()), true)
+                .peek(examWork -> {
+                    try {
+                        dataRepository.loadDataFromDb();
+                    }  catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .filter(examWork -> examWork.getExamGrade().equals(examGrade))
                 .collect(customParallelCollector);
     }

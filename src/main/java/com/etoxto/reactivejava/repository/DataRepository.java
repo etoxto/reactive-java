@@ -11,8 +11,15 @@ import java.util.Map;
 @Service
 public class DataRepository {
     private Map<Long, ExamWork> examWorkMap;
+    private boolean delayEnabled;
 
     public Collection<ExamWork> getExamWorks() {
         return examWorkMap.values();
+    }
+
+    public void loadDataFromDb() throws InterruptedException {
+        if (delayEnabled) {
+            Thread.sleep(0, 1);
+        }
     }
 }

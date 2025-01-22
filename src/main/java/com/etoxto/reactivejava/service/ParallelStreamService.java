@@ -5,7 +5,6 @@ import com.etoxto.reactivejava.model.ExamGrade;
 import com.etoxto.reactivejava.repository.DataRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,8 +15,15 @@ public class ParallelStreamService {
     @Timed(service = "Параллельный stream с стандартным коллектором ")
     public Map<Long, HashSet<Long>> getResults(DataRepository dataRepository, ExamGrade examGrade) {
         return dataRepository.getExamWorks().stream()
-                .filter(e -> e.getExamGrade().equals(examGrade))
                 .parallel()
+                .peek(examWork -> {
+                    try {
+                        dataRepository.loadDataFromDb();
+                    }  catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .filter(e -> e.getExamGrade().equals(examGrade))
                 .collect(Collectors.toConcurrentMap(
                         e -> e.getTeacher().getId(),
                         e -> {

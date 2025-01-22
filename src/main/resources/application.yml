@@ -5,6 +5,7 @@ spring:
 data:
   studentCount: "1000"
   teacherCount: "100"
+  delayEnabled: true
   examWorkCount:
     - "5000"
     - "50000"

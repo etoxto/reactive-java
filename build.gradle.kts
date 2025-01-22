@@ -32,10 +32,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-aop")
 
     implementation("net.datafaker:datafaker:1.9.0")
+
     implementation("org.openjdk.jmh:jmh-core:1.37")
     annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.37")
     testImplementation("org.openjdk.jmh:jmh-core:1.37")
     testAnnotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.37")
+
+    implementation("io.reactivex.rxjava3:rxjava:3.1.8")
 }
 
 tasks.withType<Test> {

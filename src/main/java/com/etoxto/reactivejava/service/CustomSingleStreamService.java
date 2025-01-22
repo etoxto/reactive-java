@@ -19,6 +19,13 @@ public class CustomSingleStreamService {
     @Timed(service = "Однопоточный stream с кастомным коллектором")
     public Map<Long, HashSet<Long>> getResults(DataRepository dataRepository, ExamGrade examGrade) {
         return dataRepository.getExamWorks().stream()
+                .peek(examWork -> {
+                    try {
+                        dataRepository.loadDataFromDb();
+                    }  catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .filter(e -> e.getExamGrade().equals(examGrade))
                 .collect(customSingleCollector);
     }

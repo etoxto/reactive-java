@@ -3,9 +3,11 @@ package com.etoxto.reactivejava;
 import com.etoxto.reactivejava.config.DataConfig;
 import com.etoxto.reactivejava.model.ExamGrade;
 import com.etoxto.reactivejava.repository.DataRepository;
+import com.etoxto.reactivejava.service.CustomObservableService;
 import com.etoxto.reactivejava.service.CustomParallelStreamService;
 import com.etoxto.reactivejava.service.CustomSingleStreamService;
 import com.etoxto.reactivejava.service.CustomSpliteratorStreamService;
+import com.etoxto.reactivejava.service.FlowableService;
 import com.etoxto.reactivejava.service.IterativeLoopService;
 import com.etoxto.reactivejava.service.ParallelStreamService;
 import com.etoxto.reactivejava.service.SingleStreamService;
@@ -30,6 +32,8 @@ public class ReactiveJavaApplication {
     CustomParallelStreamService customParallelStreamService;
     CustomSingleStreamService customSingleStreamService;
     CustomSpliteratorStreamService customSpliteratorStreamService;
+    CustomObservableService customObservableService;
+    FlowableService flowableService;
 
     public static void main(String[] args) {
         SpringApplication.run(ReactiveJavaApplication.class, args);
@@ -40,12 +44,15 @@ public class ReactiveJavaApplication {
         for (var examWorkCount: dataConfig.getExamWorkCount()) {
             System.out.println("\nКоличество объектов: " + examWorkCount);
             dataRepository.setExamWorkMap(recordGenerator.generateExamWorks(examWorkCount));
+            dataRepository.setDelayEnabled(dataConfig.isDelayEnabled());
             loopService.getResults(dataRepository, ExamGrade.D);
             singleStreamService.getResults(dataRepository, ExamGrade.D);
             parallelStreamService.getResults(dataRepository, ExamGrade.D);
             customSingleStreamService.getResults(dataRepository, ExamGrade.D);
             customParallelStreamService.getResults(dataRepository, ExamGrade.D);
             customSpliteratorStreamService.getResults(dataRepository, ExamGrade.D);
+            customObservableService.getResults(dataRepository, ExamGrade.D);
+            flowableService.getResults(dataRepository, ExamGrade.D);
         }
     }
 }
