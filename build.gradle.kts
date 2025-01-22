@@ -32,9 +32,20 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-aop")
 
     implementation("net.datafaker:datafaker:1.9.0")
-
+    implementation("org.openjdk.jmh:jmh-core:1.37")
+    annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.37")
+    testImplementation("org.openjdk.jmh:jmh-core:1.37")
+    testAnnotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.37")
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.register<JavaExec>("jmh") {
+    group = "benchmark"
+    description = "Run JMH benchmarks"
+    mainClass.set("org.openjdk.jmh.Main")
+    classpath = sourceSets["main"].runtimeClasspath
+    jvmArgs = listOf("-Xms2G", "-Xmx2G")
 }

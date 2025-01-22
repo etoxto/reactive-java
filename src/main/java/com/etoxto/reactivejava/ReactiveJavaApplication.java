@@ -3,7 +3,9 @@ package com.etoxto.reactivejava;
 import com.etoxto.reactivejava.config.DataConfig;
 import com.etoxto.reactivejava.model.ExamGrade;
 import com.etoxto.reactivejava.repository.DataRepository;
-import com.etoxto.reactivejava.service.CustomStreamService;
+import com.etoxto.reactivejava.service.CustomParallelStreamService;
+import com.etoxto.reactivejava.service.CustomSingleStreamService;
+import com.etoxto.reactivejava.service.CustomSpliteratorStreamService;
 import com.etoxto.reactivejava.service.IterativeLoopService;
 import com.etoxto.reactivejava.service.ParallelStreamService;
 import com.etoxto.reactivejava.service.SingleStreamService;
@@ -25,7 +27,9 @@ public class ReactiveJavaApplication {
     IterativeLoopService loopService;
     SingleStreamService singleStreamService;
     ParallelStreamService parallelStreamService;
-    CustomStreamService customStreamService;
+    CustomParallelStreamService customParallelStreamService;
+    CustomSingleStreamService customSingleStreamService;
+    CustomSpliteratorStreamService customSpliteratorStreamService;
 
     public static void main(String[] args) {
         SpringApplication.run(ReactiveJavaApplication.class, args);
@@ -39,7 +43,9 @@ public class ReactiveJavaApplication {
             loopService.getResults(dataRepository, ExamGrade.D);
             singleStreamService.getResults(dataRepository, ExamGrade.D);
             parallelStreamService.getResults(dataRepository, ExamGrade.D);
-            customStreamService.getResults(dataRepository, ExamGrade.D);
+            customSingleStreamService.getResults(dataRepository, ExamGrade.D);
+            customParallelStreamService.getResults(dataRepository, ExamGrade.D);
+            customSpliteratorStreamService.getResults(dataRepository, ExamGrade.D);
         }
     }
 }

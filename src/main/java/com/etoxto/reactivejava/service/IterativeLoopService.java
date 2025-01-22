@@ -8,14 +8,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 @Service
 public class IterativeLoopService {
 
     @Timed(service = "Преобразование через цикл")
-    public Map<Long, ArrayList<Long>> getResults(DataRepository dataRepository, ExamGrade examGrade) {
-        Map<Long, ArrayList<Long>> result = new HashMap<>();
+    public Map<Long, HashSet<Long>> getResults(DataRepository dataRepository, ExamGrade examGrade) {
+        Map<Long, HashSet<Long>> result = new HashMap<>();
 
         for (var examWork : dataRepository.getExamWorks()) {
             Long teacherId = examWork.getTeacher().getId();
@@ -25,7 +26,7 @@ public class IterativeLoopService {
                 if (result.containsKey(teacherId)) {
                     result.get(teacherId).add(studentId);
                 } else {
-                    ArrayList<Long> students = new ArrayList<>();
+                    HashSet<Long> students = new HashSet<>();
                     students.add(studentId);
                     result.put(teacherId, students);
                 }
